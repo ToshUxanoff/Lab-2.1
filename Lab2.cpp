@@ -7,39 +7,50 @@
 class Quadratic
 {
 private:
-	float a = 0;
-	float b = 0;
-	float c = 0;
+	float A = 0;
+	float B = 0;
+	float C = 0;
 public:
-	Quadratic(float ain, float bin, float cin)
+	Quadratic()
 	{
-		if (ain == 0)
-		{
-			std::cout << "Wrong parameter 'a'" << std::endl;
-		}
-		else
-		{
-			a = ain;
-			b = bin;
-			c = cin;
-		}
-	
+		A = 1;
+		B = 4;
+		C = 4;
+	}
+	Quadratic(float A_in, float B_in, float C_in)
+	{
+			A = A_in;
+			B = B_in;
+			C = C_in;
 	}
 	void Print()
 	{
 		std::cout
 			<< "a= "
-			<< a
+			<< A
 			<< "\nb= "
-			<< b
+			<< B
 			<< "\nc= "
-			<< c
+			<< C
 			<< std::endl;
 	}
 	float Discriminant()
 	{
-		float result = (this->b*this->b) - 4*(this->a*this->c);
+		float result = (this->B*this->B) - 4*(this->A*this->C);
 		return result;
+	}
+	void Root(float Discrim, float* x1, float* x2)
+	{
+		if (Discrim == 0)
+		{
+			*x1 = -B / (2 * A);
+			std::cout << "D=0; Only one root :";
+		}
+		else
+		{
+			*x1 = (-B + (sqrt(Discrim))) / (2 * A); 
+			*x2 = (-B - (sqrt(Discrim))) / (2 * A);
+		}
 	}
 };
 
@@ -49,17 +60,20 @@ int _tmain(int argc, _TCHAR* argv[])
 	//Чтобы проверить с целыми корнями, можете ввести a = 1, b = -8, c = -9 (к примеру).
 	float a = 1;
 	float b = 1;
-	float c = -20;
+	float c = -19;
 	Quadratic equation1(a, b, c);
-	if (equation1.Discriminant() < 0)
+
+	float dis = equation1.Discriminant();
+	if (dis < 0)
 	{
-		std::cout << "Корней нет (D < 0)" << std::endl;
+		std::cout << "D<0" << std::endl;
 		system("pause");
-		return -1;
+		return 0;
 	}
-	float x1 = -b + (sqrt(equation1.Discriminant())) / (2 * a);
-	float x2 = -b - sqrt(equation1.Discriminant()) / (2 * a);
-	std::cout << x1-(int)x1 << std::endl;
+	float x1 = 0;
+	float x2 = 0; 
+	equation1.Root(dis, &x1, &x2);
+	std::cout << x1 << std::endl;
 	std::cout << x2 << std::endl;
 	if (x1-(int)x1 != 0 || x2-(int)x2 !=0)
 	{

@@ -1,0 +1,104 @@
+//Вариант №7. Лаба 2.
+
+#include "stdafx.h"
+#include "iostream"
+#include "math.h"
+
+class Quadratic
+{
+private:
+	float A = 0;
+	float B = 0;
+	float C = 0;
+public:
+	Quadratic()
+	{
+		A = 1;
+		B = 4;
+		C = 4;
+	}
+	Quadratic(float A_in, float B_in, float C_in)
+	{
+			A = A_in;
+			B = B_in;
+			C = C_in;
+	}
+	void Print()
+	{
+		std::cout
+			<< "a= "
+			<< A
+			<< "\nb= "
+			<< B
+			<< "\nc= "
+			<< C
+			<< std::endl;
+	}
+	float Discriminant()
+	{
+		float result = (this->B*this->B) - 4*(this->A*this->C);
+		return result;
+	}
+	void Root(float Discrim, float& x1, float& x2)
+	{
+		if (Discrim == 0)
+		{
+			x1 = -B / (2 * A);
+			std::cout << "D=0; Единственный корень :";
+		}
+		else
+		{
+			x1 = (-B + (sqrt(Discrim))) / (2 * A); 
+			x2 = (-B - (sqrt(Discrim))) / (2 * A);
+		}
+	}
+};
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	setlocale(LC_ALL, "Russian");
+	float a = 0;
+	float b = 0;
+	float c = 0;
+	float x1 = 0;
+	float x2 = 0;
+	int n = 0;
+	std::cout << "Введите количество уравнений: ";
+	std::cin >> n;
+	Quadratic **pQ = new Quadratic*[n];
+		for (int i = 0; i < n; i++)
+	{
+		std::cout << " Введите коэффициенты A, B, C:";
+		std::cin >> a;
+		std::cin >> b;
+		std::cin >> c;
+		pQ[i] = new Quadratic(a, b, c);
+		float discr = pQ[i]->Discriminant();
+		if (discr < 0)
+		{
+			std::cout << "Дискриминант отрицательный"<<std::endl;
+			continue;
+		}
+		pQ[i]->Root(discr, x1, x2);
+		std::cout << x1 << std::endl;
+		std::cout << x2 << std::endl;
+		if (x1 - (int)x1 != 0 || x2 - (int)x2 != 0)
+		{
+			pQ[i]->Print();
+		}
+		else
+		{
+			std::cout << "Корни целые. Коэффициенты не выводятся." << std::endl;
+		}
+	}
+		for (int i = 0; i < n; i++)
+		{
+			delete pQ[i];
+		}
+		delete[] pQ;
+	system("pause");
+	return 0;
+}
+
+
+
